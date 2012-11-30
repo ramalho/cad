@@ -1,16 +1,49 @@
 lado_peao = 19;
 lado_torre = 28;
 diametro_dama = 24;
-lado_casa = 42;
+lado_casa = 44;
 cor_escura = [0, 0, 0];
 cor_clara = [1, 1, 0];
 offset_peao = (lado_casa - lado_peao) / 2;
 offset_torre = (lado_casa - lado_torre) / 2;
 
-color(cor_escura) square([lado_casa, lado_casa]);
-translate([offset_peao, offset_peao, 0])
-	cube([lado_peao, lado_peao, lado_peao]);
-translate([lado_casa+offset_torre, offset_torre, 0])
-	cube([lado_torre, lado_torre, lado_torre]);
-translate([lado_casa*2, 0, 0])
-	color(cor_escura) square([lado_casa, lado_casa]);
+use <tabuleiro.scad>;
+tabuleiro(lado_casa);
+
+module peao(fila, coluna) {
+	translate([lado_casa*coluna+offset_peao, 
+			    lado_casa*fila+offset_peao, 0])
+		cube([lado_peao, lado_peao, lado_peao]);
+}
+
+module torre(fila, coluna) {
+	translate([lado_casa*coluna+offset_torre, 
+                      lado_casa*fila+offset_torre, 0])
+		cube([lado_torre, lado_torre, lado_torre]);
+}
+
+module cavalo(fila, coluna) {
+	difference() {
+		translate([lado_casa*coluna+offset_torre, 
+                            lado_casa*fila+offset_torre, 0])
+			cube([lado_torre, lado_torre, lado_torre]);
+		translate([lado_casa*coluna-lado_torre/2+offset_torre, 
+                            lado_casa*fila+offset_torre-lado_torre/2,
+				    lado_torre/2])
+			cube([lado_torre, lado_torre, lado_torre]);
+		translate([lado_casa*coluna+lado_torre/2+offset_torre, 
+				    lado_casa*fila+offset_torre+lado_torre/2, 
+				    -lado_torre/2])
+			cube([lado_torre, lado_torre, lado_torre]);
+	}
+}
+
+for (coluna = [0:7]) {
+	peao(1, coluna);
+}
+torre(0, 0);
+torre(0, 7);
+cavalo(0, 1);
+cavalo(2, 5);
+
+
