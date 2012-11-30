@@ -39,10 +39,20 @@ module cavalo(fila, coluna) {
 }
 
 module bispo(fila, coluna) {
-	hull() {
-		square([lado_torre/4, lado_torre/4]);
-		translate([lado_torre/4*3, lado_torre/4*3, 0])
+	translate([lado_casa*coluna+offset_torre, 
+                      lado_casa*fila+offset_torre, 0])
+	linear_extrude(height=lado_torre) {
+		hull() {
 			square([lado_torre/4, lado_torre/4]);
+			translate([lado_torre/4*3, lado_torre/4*3, 0])
+				square([lado_torre/4, lado_torre/4]);
+		}
+		hull() {
+			translate([0, lado_torre/4*3, 0])
+				square([lado_torre/4, lado_torre/4]);
+			translate([lado_torre/4*3, 0, 0])
+				square([lado_torre/4, lado_torre/4]);
+		}
 	}
 }
 
