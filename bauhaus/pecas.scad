@@ -38,10 +38,20 @@ module cavalo(fila, coluna) {
 	}
 }
 
+module bispo(fila, coluna) {
+	hull() {
+		square([lado_torre/4, lado_torre/4]);
+		translate([lado_torre/4*3, lado_torre/4*3, 0])
+			square([lado_torre/4, lado_torre/4]);
+	}
+}
+
+
 for (coluna = [0:7]) {
 	peao(1, coluna);
 }
-torre(0, 0);
+// torre(0, 0);
+bispo(0, 0);
 torre(0, 7);
 cavalo(0, 1);
 cavalo(2, 5);
