@@ -24,9 +24,7 @@ module torre(fila, coluna) {
 
 module cavalo(fila, coluna) {
 	difference() {
-		translate([lado_casa*coluna+offset_torre, 
-                            lado_casa*fila+offset_torre, 0])
-			cube([lado_torre, lado_torre, lado_torre]);
+		torre(fila, coluna);
 		translate([lado_casa*coluna-lado_torre/2+offset_torre, 
                             lado_casa*fila+offset_torre-lado_torre/2,
 				    lado_torre/2])
@@ -42,18 +40,35 @@ module bispo(fila, coluna) {
 	translate([lado_casa*coluna+offset_torre, 
                       lado_casa*fila+offset_torre, 0])
 	linear_extrude(height=lado_torre) {
-		hull() {
-			square([lado_torre/4, lado_torre/4]);
-			translate([lado_torre/4*3, lado_torre/4*3, 0])
+		union () {
+			hull() {
 				square([lado_torre/4, lado_torre/4]);
-		}
-		hull() {
-			translate([0, lado_torre/4*3, 0])
-				square([lado_torre/4, lado_torre/4]);
-			translate([lado_torre/4*3, 0, 0])
-				square([lado_torre/4, lado_torre/4]);
+				translate([lado_torre/4*3, lado_torre/4*3, 0])
+					square([lado_torre/4, lado_torre/4]);
+			}
+			hull() {
+				translate([0, lado_torre/4*3, 0])
+					square([lado_torre/4, lado_torre/4]);
+				translate([lado_torre/4*3, 0, 0])
+					square([lado_torre/4, lado_torre/4]);
+			}
 		}
 	}
+}
+
+module dama(fila, coluna) {
+	torre(fila, coluna);
+	translate([lado_casa*coluna+lado_casa/2, 
+                      lado_casa*fila+lado_casa/2, 
+			lado_torre+diametro_dama/3])
+		sphere(r=(diametro_dama/2));
+}
+
+module rei(fila, coluna) {
+	torre(fila, coluna);
+	rotate([0, 0, 0])
+		translate([0, 0, lado_torre])
+			peao(fila, coluna);
 }
 
 
@@ -61,9 +76,10 @@ for (coluna = [0:7]) {
 	peao(1, coluna);
 }
 // torre(0, 0);
-bispo(0, 0);
+bispo(0, 2);
 torre(0, 7);
+bispo(0, 5);
 cavalo(0, 1);
 cavalo(2, 5);
-
-
+dama(0, 3);
+rei(3,3);
