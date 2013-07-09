@@ -2,9 +2,11 @@ lado_peao = 19;
 lado_torre = 28;
 diametro_dama = 24;
 lado_casa = 44;
+epsilon = 0.01;
 
 use <tabuleiro.scad>;
-tabuleiro(lado_casa);
+linear_extrude(height=epsilon)
+	tabuleiro(lado_casa);
 
 module peao(fila, coluna) {
 	translate([lado_casa*(coluna+.5),
@@ -77,9 +79,10 @@ module rei(fila, coluna) {
 		}
 }
 
-for (coluna = [0:7]) {
+for (coluna = [0:6]) {
 	peao(1, coluna);
 }
+peao(1+2*$t, 7);
 torre(0, 0);
 cavalo(0, 1);
 bispo(0, 2);
@@ -96,19 +99,13 @@ for (coluna = [0:7]) {
 
 // XXX: como aplicar a cor a todas essas peças de uma vez?
 
-color([.5, 0, 0])
-torre(7, 0);
-color([.5, 0, 0])
-cavalo(7, 1);
-color([.5, 0, 0])
-bispo(7, 2);
-color([.5, 0, 0])
-dama(7, 3);
-color([.5, 0, 0])
-rei(7,4);
-color([.5, 0, 0])
-bispo(7, 5);
-color([.5, 0, 0])
-cavalo(7, 6);
-color([.5, 0, 0])
-torre(7, 7);
+color([.5, 0, 0]) {
+	torre(7, 0);
+	cavalo(7, 1);
+	bispo(7, 2);
+	dama(7, 3);
+	rei(7,4);
+	bispo(7, 5);
+	cavalo(7, 6);
+	torre(7, 7);
+}
